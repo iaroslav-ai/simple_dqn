@@ -121,9 +121,9 @@ class GymEnvironment(Environment):
 
   def getScreen(self):
     assert self.obs is not None
-    print self.dims, self.obs.shape
-    plt.imshow(self.obs[:,:])
-    plt.show()
+    #print self.dims, self.obs.shape
+    #plt.imshow(self.obs[:,:])
+    #plt.show()
     return imresize(color.rgb2gray(self.obs), self.dims)
 
   def isTerminal(self):
