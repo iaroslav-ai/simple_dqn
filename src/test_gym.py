@@ -2,7 +2,6 @@ import gym
 import random
 import argparse
 import numpy as np
-import cv2
 from environment import GymEnvironment
 from deepqnetwork import DeepQNetwork
 from agent import Agent

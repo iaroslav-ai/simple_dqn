@@ -1,8 +1,10 @@
 import sys
 import os
 import logging
-import cv2
+from scipy.misc import imresize
+from skimage import color
 logger = logging.getLogger(__name__)
+import matplotlib.pyplot as plt
 
 class Environment:
   def __init__(self):
@@ -85,8 +87,10 @@ class ALEEnvironment(Environment):
 
   def getScreen(self):
     screen = self.ale.getScreenGrayscale()
-    import cv2
-    resized = cv2.resize(screen, self.dims)
+    #print self.dims, screen.shape
+    #plt.imshow(screen.squeeze())
+    #plt.show()
+    resized = imresize(screen.squeeze(), self.dims)
     return resized
 
   def isTerminal(self):
@@ -117,7 +121,10 @@ class GymEnvironment(Environment):
 
   def getScreen(self):
     assert self.obs is not None
-    return cv2.resize(cv2.cvtColor(self.obs, cv2.COLOR_RGB2GRAY), self.dims)
+    print self.dims, self.obs.shape
+    plt.imshow(self.obs[:,:])
+    plt.show()
+    return imresize(color.rgb2gray(self.obs), self.dims)
 
   def isTerminal(self):
     assert self.terminal is not None
