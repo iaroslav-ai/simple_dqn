@@ -3,6 +3,7 @@ import logging
 import numpy as np
 logger = logging.getLogger(__name__)
 from state_buffer import StateBuffer
+from progress_bar import printProgress
 
 class Agent:
   def __init__(self, environment, replay_memory, deep_q_network, args):
@@ -18,7 +19,7 @@ class Agent:
     self.exploration_rate_end = args.exploration_rate_end
     self.exploration_decay_steps = args.exploration_decay_steps
     self.exploration_rate_test = args.exploration_rate_test
-    self.total_train_steps = args.start_epoch * args.train_steps
+    #self.total_train_steps = args.start_epoch * args.train_steps
 
     self.train_frequency = args.train_frequency
     self.train_repeat = args.train_repeat
@@ -92,9 +93,12 @@ class Agent:
     # do not do restart here, continue from testing
     #self._restartRandom()
     # play given number of steps
+    import time
+    start_time = time.time()
     for i in xrange(train_steps):
       # perform game step
       action, reward, screen, terminal = self.step(self._explorationRate())
+      printProgress(i, train_steps, start_time)
       self.mem.add(action, reward, screen, terminal)
       # train after every train_frequency steps
       if self.mem.count > self.mem.batch_size and i % self.train_frequency == 0:
